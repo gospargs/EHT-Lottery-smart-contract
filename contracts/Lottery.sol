@@ -2,8 +2,8 @@ pragma solidity ^0.4.17; // specifies the version of solidity that our code is w
 
 contract Lottery {
     address public manager;  // does not enforece security if we use public or private
-    address [] public players; // dynamic array that can only hold addresses
-    
+    address[] public players; // dynamic array that can only hold addresses
+    address public winner;
     // msg is a global object that is always available in any function that runs in our contract
     /*
         mgs.data - Data field from the call or transaction that invoked the current function
@@ -22,17 +22,22 @@ contract Lottery {
     }
 
     function random() private view returns (uint){ // returns random number - not realy that random
-       return uint(sha3(block.difficulty,now,players)); // sha3 - Global function,block - global variable (the difficulty to solve a current block), now - current time no need for importing
+       return uint(keccak256(block.difficulty,now,players)); // keccak256 - Global function,block - global variable (the difficulty to solve a current block), now - current time no need for importing
     }
 
     function pickWinner () public restricted { // restircted - first calls the modifier restricted()
         uint index = random() % players.length;
         players[index].transfer(this.balance); // transfer - used for sending money to se specific address from a contract, this.balance - this-is our contract
-        players = new address [](0); // empty out the list of players
+        winner = players[index];
+        players = new address[](0); // empty out the list of players
     }
 
     function getPlayers() public view returns (address[]){
         return players;
+    }
+
+    function getWinner() public view returns (address){
+        return winner;
     }
 
     modifier restricted(){ // Used for reducing the amount of code, any repetetive code

@@ -104,4 +104,19 @@ describe('Lottery Contract', () => {
     assert(numberOfPlayers.length==0);
   });
 
+  it('The winner address', async () => {
+    await lottery.methods.enter().send({
+        from: accounts[0],
+        value: web3.utils.toWei('2','ether')
+    });
+    const players = await lottery.methods.getPlayers().call({
+        from: accounts[0]   
+     });
+    await lottery.methods.pickWinner().send({
+        from: accounts[0]
+    });
+    const winner = await lottery.methods.getWinner().call();
+   assert(players==winner);
+});
+
 });

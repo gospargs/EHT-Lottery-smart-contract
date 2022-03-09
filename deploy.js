@@ -3,7 +3,7 @@ const Web3 = require('web3');
 const { interface, bytecode } = require('./compile');
 
 const provider = new HDWalletProvider(
-  'title twist giraffe virus seek debris dutch inherit enjoy weasel embody auction',
+  'viable alter flight safe similar join pattern crater myth toy garment public',
   'https://rinkeby.infura.io/v3/3d25ac5f70134fd9b88eea167b74c3e1'
 
 );
@@ -18,6 +18,7 @@ const deploy = async () => {
     .deploy({ data: bytecode })
     .send({ gas: '1000000', from: accounts[0] });
 
+  console.log(interface);
   console.log('Contract deployed to', result.options.address);
   provider.engine.stop();
 };
